@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quintal · Reserve sua data</title>
+<meta name="description" content="Escolha sua data no calendário do Quintal, em São Miguel do Iguaçu. Piscina, churrasqueira e espaço para até 30 pessoas.">
+<meta property="og:title" content="Quintal · Reserve sua data">
+<meta property="og:description" content="Veja as datas livres e faça seu pedido de reserva em poucos minutos.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#F4F6F4;font-family:Inter,system-ui,sans-serif;color:#1B2B22;-webkit-font-smoothing:antialiased}
+  .app{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:140px}
+  h1,h2,.ttl{font-family:Outfit,system-ui,sans-serif}
+  .pad{padding:0 20px}
+  .top{display:flex;align-items:center;gap:10px;padding:22px 20px 0}
+  .logo{width:40px;height:40px;border-radius:12px;background:#1F4D3A;display:flex;align-items:center;justify-content:center;flex:none}
+  .muted{color:#5D6B63}
+  a{color:#1F4D3A;font-weight:600;text-decoration:none}
+  h1{margin:20px 0 0;font-size:26px;line-height:1.2;font-weight:600}
+  .lead{margin:8px 0 0;font-size:14px;line-height:1.45}
+  .hero{margin:16px 20px 0;padding:16px 18px;border-radius:16px;background:#1F4D3A;color:#fff}
+  .hero .big{font:600 32px Outfit,sans-serif;display:block;margin:2px 0}
+  .hero small{display:block;color:#CFE0D6;font-size:13px;line-height:1.45}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 8px}
+  .icon-btn{width:44px;height:44px;border-radius:12px;border:1px solid #D9DED9;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .icon-btn:disabled{opacity:.35;cursor:default}
+  .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;padding:0 20px}
+  .wd{font-size:11px;font-weight:600;color:#5D6B63;text-align:center;padding-bottom:6px}
+  .day{height:44px;border-radius:10px;border:1px solid #D9DED9;background:#fff;color:#1B2B22;font:500 15px Inter,sans-serif;cursor:pointer}
+  .day.loc{background:#DADFDB;border-color:#DADFDB;color:#6E7A73;text-decoration:line-through;cursor:not-allowed}
+  .day.past{background:#fff;border-color:#EEF1EE;color:#B9C3BC;cursor:not-allowed}
+  .day.sel{background:#1F4D3A;border-color:#1F4D3A;color:#fff}
+  .day.esp{background:#FCEBDD;border-color:#F4CFAE;color:#7A4113;cursor:not-allowed}
+  .legend{display:flex;gap:16px;font-size:12px;color:#5D6B63;padding:14px 20px 0}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .sw{width:12px;height:12px;border-radius:4px;display:inline-block}
+  .sec{padding:24px 20px 0}
+  .sec h2{font-size:16px;font-weight:600;margin:0 0 10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;font-size:13px}
+  .chips span{padding:8px 12px;border-radius:999px;background:#F2F6F3}
+  .box{border:1px solid #E6EAE7;border-radius:14px;padding:14px 16px;font-size:14px}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:4px 0}
+  .warn{margin-top:10px;font-size:12px;line-height:1.45;color:#7A4113;background:#FCEBDD;border-radius:10px;padding:10px 12px}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #E6EAE7}
+  .bar .in{max-width:480px;margin:0 auto;padding:12px 20px 20px;display:flex;flex-direction:column;gap:10px}
+  .cta{height:52px;border-radius:14px;border:0;background:#1F4D3A;color:#fff;font:600 16px Inter,sans-serif;cursor:pointer;width:100%}
+  .cta:disabled{background:#B9C3BC;cursor:not-allowed}
+  .ghost{height:52px;border-radius:14px;border:1px solid #1F4D3A;background:#fff;color:#1F4D3A;font:600 16px Inter,sans-serif;cursor:pointer;width:100%}
+  label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600}
+  input,select,textarea{font:400 16px Inter,sans-serif;color:#1B2B22;border:1px solid #D9DED9;border-radius:12px;padding:0 14px;height:48px;background:#fff;width:100%}
+  textarea{padding:12px 14px;height:auto;resize:none}
+  .form{display:flex;flex-direction:column;gap:14px;padding:18px 20px 0}
+  .pills{display:flex;gap:6px}
+  .pill{flex:1;height:44px;border-radius:12px;border:1px solid #D9DED9;background:#fff;font:500 14px Inter,sans-serif;cursor:pointer;color:#1B2B22}
+  .pill.on{border-color:#1F4D3A;background:#E3ECE6;color:#1F4D3A}
+  .check{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400;line-height:1.45;color:#3E4A43}
+  .check input{width:20px;height:20px;flex:none;margin:0;padding:0}
+  .err{display:none;margin:14px 20px 0;padding:12px 14px;border-radius:12px;background:#FDECEC;color:#8A1F1F;font-size:14px;line-height:1.4}
+  .chip-date{margin:16px 20px 0;padding:12px 14px;border-radius:14px;background:#1F4D3A;color:#fff;display:flex;justify-content:space-between;align-items:baseline}
+  .ok{padding:90px 24px 24px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .loading{padding:30px 20px;text-align:center;font-size:14px;color:#5D6B63}
+  .pixbox{width:100%;border:1px dashed #1F4D3A;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;background:#F2F6F3;text-align:left}
+  .regras{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.4}
+  .regras li{display:flex;gap:10px;align-items:flex-start}
+  .regras li:before{content:"";flex:none;width:8px;height:8px;border-radius:4px;background:#1F4D3A;margin-top:6px}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- CALENDÁRIO -->
+  <section id="vCal">
+    <div class="top">
+      <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22V12"/><path d="M5 12a7 7 0 0 1 14 0z"/><path d="M12 5V2"/></svg></div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <span class="ttl" style="font-size:20px;font-weight:700">Quintal</span>
+        <span class="muted" style="font-size:12px">Espaço para eventos · Bela Vista II</span>
+      </div>
+      <a id="insta" href="#" target="_blank" rel="noopener" style="margin-left:auto;font-size:13px;padding:10px 0">@quintal.smi</a>
+    </div>
+    <div class="pad">
+      <h1>Escolha a data do seu evento</h1>
+      <p class="lead muted">Toque num dia livre e mande seu pedido. A confirmação chega no seu WhatsApp.</p>
+    </div>
+    <div class="hero">
+      <small>Locação do espaço</small>
+      <span class="big" id="hPreco"></span>
+      <span style="font-size:14px" id="hLimite"></span>
+      <small style="margin-top:4px" id="hHoras"></small>
+    </div>
+
+    <div class="nav">
+      <button class="icon-btn" id="prev" aria-label="Mês anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B2B22" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <span class="ttl" style="font-size:17px;font-weight:600" id="mes"></span>
+      <button class="icon-btn" id="next" aria-label="Próximo mês"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B2B22" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="grid"><div class="wd">DOM</div><div class="wd">SEG</div><div class="wd">TER</div><div class="wd">QUA</div><div class="wd">QUI</div><div class="wd">SEX</div><div class="wd">SÁB</div></div>
+    <div id="loading" class="loading">Carregando as datas…</div>
+    <div class="grid" id="dias"></div>
+    <div class="legend">
+      <span><i class="sw" style="border:1px solid #B9C3BC"></i>Livre</span>
+      <span><i class="sw" style="background:#DADFDB"></i>Locado</span>
+      <span><i class="sw" style="background:#FCEBDD;border:1px solid #F4CFAE"></i>Sob consulta</span>
+      <span><i class="sw" style="background:#1F4D3A"></i>Sua escolha</span>
+    </div>
+
+    <p id="espNota" class="muted" style="margin:10px 20px 0;font-size:13px;line-height:1.45" hidden>Natal e Réveillon (dias em laranja) têm valores diferentes. <a id="espLink" target="_blank" rel="noopener">Chama no WhatsApp pra consultar</a>.</p>
+    <div class="sec">
+      <h2>O que tem no espaço</h2>
+      <div class="chips"><span>Piscina</span><span>Churrasqueira</span><span>Geladeira</span><span>TV</span><span>Mesas e cadeiras</span><span>Talheres</span><span>Espetos para churrasco</span></div>
+    </div>
+    <div class="sec">
+      <h2>Regras do espaço</h2>
+      <ul class="regras" id="regras"></ul>
+    </div>
+    <div class="sec">
+      <h2>Como reservar</h2>
+      <div class="box">
+        <div class="row"><span class="muted">Taxa de reserva no Pix</span><strong id="cTaxa"></strong></div>
+        <div class="row"><span class="muted">Restante no dia da locação</span><strong id="cRest"></strong></div>
+        <div class="muted" style="font-size:13px;line-height:1.45;padding-top:6px" id="cComp"></div>
+        <div class="warn" id="cRegra"></div>
+      </div>
+    </div>
+
+    <div class="bar"><div class="in">
+      <div id="selInfo" class="muted" style="font-size:14px">Nenhuma data escolhida ainda</div>
+      <button class="cta" id="btnCont" disabled>Continuar</button>
+    </div></div>
+  </section>
+
+  <!-- FORMULÁRIO -->
+  <section id="vForm" hidden>
+    <div class="top">
+      <button class="icon-btn" id="voltar" aria-label="Voltar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B2B22" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <span class="ttl" style="font-size:18px;font-weight:600">Seu pedido</span>
+    </div>
+    <div class="chip-date"><span class="ttl" style="font-size:16px;font-weight:600" id="fData"></span><strong id="fPreco"></strong></div>
+    <form id="form" class="form" novalidate>
+      <label>Seu nome<input id="nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" maxlength="80" required></label>
+      <label>WhatsApp<input id="whats" type="tel" autocomplete="tel" inputmode="tel" placeholder="(45) 9 0000-0000" required></label>
+      <div style="display:flex;gap:12px">
+        <label style="flex:1">Tipo de evento<select id="tipo"></select></label>
+        <label style="width:112px">Convidados<input id="conv" type="number" inputmode="numeric" min="1" placeholder="até 30" required></label>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <span style="font-size:13px;font-weight:600">Que horas pretende chegar?</span>
+        <div class="pills" id="horas"></div>
+        <span class="muted" style="font-size:12px" id="saida"></span>
+      </div>
+      <label>Alguma observação?<textarea id="obs" rows="3" maxlength="500"></textarea></label>
+      <div class="hp" aria-hidden="true"><label>Site<input id="site" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <div class="box" style="background:#F2F6F3;border:0">
+        <div class="row"><span class="muted">Taxa de reserva (Pix)</span><strong id="fTaxa"></strong></div>
+        <div class="row"><span class="muted">No dia da locação</span><strong id="fRest"></strong></div>
+      </div>
+      <div class="box"><strong style="font-size:13px">Regras do espaço</strong><ul class="regras" id="fRegras" style="margin-top:8px;font-size:13px"></ul></div>
+      <label class="check"><input id="ciente" type="checkbox"><span id="fCiente"></span></label>
+    </form>
+    <div class="err" id="erro" role="alert"></div>
+    <div style="padding:20px 20px 24px;display:flex;flex-direction:column;gap:10px">
+      <button class="cta" id="btnEnviar">Enviar pedido</button>
+      <span class="muted" style="font-size:12px;text-align:center">A data fica garantida depois do Pix da taxa de reserva.</span>
+    </div>
+  </section>
+
+  <!-- CONFIRMAÇÃO -->
+  <section id="vOk" hidden>
+    <div class="ok">
+      <div style="width:72px;height:72px;border-radius:36px;background:#E3ECE6;display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h1 style="margin:0">Pedido enviado!</h1>
+      <p class="muted" style="margin:0;font-size:15px;line-height:1.5" id="okTxt"></p>
+      <div class="pixbox" id="pixBox" hidden>
+        <span class="muted" style="font-size:12px">Chave Pix (celular) para a taxa de reserva</span>
+        <div style="display:flex;gap:8px;align-items:center;width:100%">
+          <strong id="pixChave" style="flex:1;font-size:19px"></strong>
+          <button type="button" class="pill on" id="btnPix" style="flex:none;padding:0 16px">Copiar</button>
+        </div>
+      </div>
+      <div class="warn" style="margin-top:6px;font-size:13px" id="okRegra"></div>
+      <a id="okWhats" class="cta" hidden target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;color:#fff;margin-top:8px">Mandar o comprovante no WhatsApp</a>
+      <button class="ghost" id="btnNovo" style="margin-top:4px">Voltar ao calendário</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+var API = 'https://script.google.com/macros/s/AKfycby5qaybBpje49RuHTZMlSOAJrOzNsqzcEY12CVyBEaLHRfKvINbbxx22DW9t_g24AWu/exec';
+var CFG = null;
+var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+var DIAS = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+var S = { hoje: null, locados: {}, mi: 0, sel: null, hora: 9, enviando: false };
+
+function $(id) { return document.getElementById(id); }
+function brl(v) { return 'R$ ' + Number(v).toFixed(2).replace('.', ','); }
+function iso(y, m, d) { return y + '-' + ('0' + (m + 1)).slice(-2) + '-' + ('0' + d).slice(-2); }
+function parse(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function rotulo(s) { var d = parse(s); return DIAS[d.getDay()] + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()]; }
+function fone(t) { var d = String(t).replace(/\D/g, ''); return d.length === 11 ? '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7) : d; }
+function show(v) { ['vCal', 'vForm', 'vOk'].forEach(function (id) { $(id).hidden = id !== v; }); window.scrollTo(0, 0); }
+
+function textos() {
+  $('insta').href = CFG.instagram;
+  $('hPreco').textContent = brl(CFG.preco);
+  $('hLimite').textContent = 'Diária para até ' + CFG.limitePessoas + ' pessoas';
+  $('hHoras').textContent = 'Até ' + CFG.horasLocacao + ' horas no mesmo dia, com entrada pela manhã e saída até as ' + CFG.horaSaida + 'h.';
+  $('cTaxa').textContent = $('fTaxa').textContent = brl(CFG.taxa);
+  $('cRest').textContent = $('fRest').textContent = brl(CFG.restante);
+  $('fPreco').textContent = brl(CFG.preco);
+  var regra = 'Em caso de desistência ou cancelamento pelo contratante, a taxa de reserva de ' + brl(CFG.taxa) + ' não é devolvida. Pagamento somente por Pix.';
+  $('cRegra').textContent = regra;
+  $('fCiente').textContent = 'Li as regras do espaço e estou ciente de que, se eu desistir ou cancelar, a taxa de reserva de ' + brl(CFG.taxa) + ' não é devolvida.';
+  $('cComp').textContent = CFG.whatsappQuintal ? 'Depois do Pix, é só mandar o comprovante no WhatsApp ' + fone(CFG.whatsappQuintal) + '.' : '';
+  ['regras', 'fRegras'].forEach(function (id) { (CFG.regras || []).forEach(function (r) { var li = document.createElement('li'); li.textContent = r; $(id).appendChild(li); }); });
+  $('okRegra').textContent = 'A data só fica garantida depois do pagamento da taxa. Os ' + brl(CFG.restante) + ' restantes são pagos no dia.';
+  if ((CFG.datasSobConsulta || []).length && CFG.whatsappQuintal) {
+    var wn = CFG.whatsappQuintal.replace(/\D/g, ''); if (wn.indexOf('55') !== 0) wn = '55' + wn;
+    $('espLink').href = 'https://wa.me/' + wn + '?text=' + encodeURIComponent('Oi! Queria saber o valor do Quintal para o Natal ou Réveillon.');
+    $('espNota').hidden = false;
+  }
+  $('conv').max = CFG.limitePessoas;
+  $('conv').placeholder = 'até ' + CFG.limitePessoas;
+  var sel = $('tipo');
+  CFG.tiposEvento.forEach(function (t) { var o = document.createElement('option'); o.textContent = t; o.value = t; sel.appendChild(o); });
+  renderHoras();
+}
+
+function mesAtual() {
+  var h = parse(S.hoje);
+  var d = new Date(h.getFullYear(), h.getMonth() + S.mi, 1);
+  return { y: d.getFullYear(), m: d.getMonth() };
+}
+
+function renderCal() {
+  var mm = mesAtual(), y = mm.y, m = mm.m;
+  $('mes').textContent = MESES[m].charAt(0).toUpperCase() + MESES[m].slice(1) + ' ' + y;
+  $('prev').disabled = S.mi <= 0;
+  $('next').disabled = S.mi >= CFG.mesesVisiveis;
+  var g = $('dias');
+  g.innerHTML = '';
+  var off = new Date(y, m, 1).getDay(), len = new Date(y, m + 1, 0).getDate();
+  for (var i = 0; i < off; i++) g.appendChild(document.createElement('span'));
+  for (var n = 1; n <= len; n++) {
+    var s = iso(y, m, n), b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'day';
+    b.textContent = n;
+    var passado = s <= S.hoje, loc = !!S.locados[s], esp = (CFG.datasSobConsulta || []).indexOf(s) >= 0;
+    if (passado) { b.className += ' past'; b.disabled = true; b.setAttribute('aria-label', n + ' de ' + MESES[m] + ', indisponível'); }
+    else if (esp && !loc) { b.className += ' esp'; b.disabled = true; b.setAttribute('aria-label', n + ' de ' + MESES[m] + ', valor sob consulta'); }
+    else if (loc) { b.className += ' loc'; b.disabled = true; b.setAttribute('aria-label', n + ' de ' + MESES[m] + ', locado'); }
+    else {
+      b.setAttribute('aria-label', n + ' de ' + MESES[m] + ', livre');
+      if (S.sel === s) b.className += ' sel';
+      b.onclick = (function (v) { return function () { S.sel = v; renderCal(); renderSel(); }; })(s);
+    }
+    g.appendChild(b);
+  }
+}
+
+function renderSel() {
+  var info = $('selInfo');
+  if (S.sel) {
+    info.innerHTML = '';
+    var a = document.createElement('strong'); a.className = 'ttl'; a.style.cssText = 'font-size:16px;color:#1B2B22'; a.textContent = rotulo(S.sel);
+    var b = document.createElement('span'); b.style.cssText = 'float:right;font-weight:600;color:#1B2B22'; b.textContent = brl(CFG.preco);
+    info.appendChild(a); info.appendChild(b);
+  } else {
+    info.textContent = 'Nenhuma data escolhida ainda';
+  }
+  $('btnCont').disabled = !S.sel;
+}
+
+function renderHoras() {
+  var c = $('horas');
+  c.innerHTML = '';
+  CFG.horariosChegada.forEach(function (h) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pill' + (S.hora === h ? ' on' : '');
+    b.textContent = h + 'h';
+    b.onclick = function () { S.hora = h; renderHoras(); };
+    c.appendChild(b);
+  });
+  var saida = Math.min(S.hora + CFG.horasLocacao, CFG.horaSaida);
+  $('saida').textContent = 'Chegando às ' + S.hora + 'h, a saída é até as ' + saida + 'h.';
+}
+
+function carregar(depois) {
+  fetch(API + '?api=disp&t=' + Date.now())
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res || !res.ok) throw new Error('falha');
+      var primeira = !CFG;
+      CFG = res.cfg;
+      if (primeira) textos();
+      var d = res.disp;
+      S.hoje = d.hoje;
+      S.locados = {};
+      d.locados.forEach(function (s) { S.locados[s] = true; });
+      if (S.sel && S.locados[S.sel]) S.sel = null;
+      $('loading').hidden = true;
+      renderCal(); renderSel();
+      if (depois) depois();
+    })
+    .catch(function () {
+      $('loading').hidden = false;
+      $('loading').textContent = 'Não foi possível carregar as datas agora. Atualize a página em instantes.';
+    });
+}
+
+function mostrarErro(msg) { var e = $('erro'); e.textContent = msg; e.style.display = msg ? 'block' : 'none'; }
+
+function enviar() {
+  if (S.enviando) return;
+  mostrarErro('');
+  var p = {
+    data: S.sel,
+    nome: $('nome').value.trim(),
+    whatsapp: $('whats').value,
+    tipo: $('tipo').value,
+    convidados: $('conv').value,
+    chegada: S.hora,
+    obs: $('obs').value.trim(),
+    ciente: $('ciente').checked,
+    site: $('site').value
+  };
+  var tel = p.whatsapp.replace(/\D/g, '');
+  var conv = parseInt(p.convidados, 10);
+  if (p.nome.length < 2) return mostrarErro('Informe seu nome.');
+  if (tel.length < 10 || tel.length > 13) return mostrarErro('Informe seu WhatsApp com DDD.');
+  if (!(conv >= 1 && conv <= CFG.limitePessoas)) return mostrarErro('O limite do espaço é de ' + CFG.limitePessoas + ' pessoas.');
+  if (!p.ciente) return mostrarErro('Marque que está ciente da regra da taxa de reserva.');
+
+  S.enviando = true;
+  var btn = $('btnEnviar');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(p) })
+    .then(function (resp) { return resp.json(); })
+    .then(function (r) {
+      S.enviando = false; btn.disabled = false; btn.textContent = 'Enviar pedido';
+      if (r && r.ok) {
+        $('okTxt').textContent = 'Recebemos seu pedido para ' + rotulo(S.sel) + '. Pra garantir a data, faça o Pix da taxa de reserva de ' + brl(CFG.taxa) + ' na chave abaixo e mande o comprovante no WhatsApp' + (CFG.whatsappQuintal ? ' ' + fone(CFG.whatsappQuintal) : '') + '. A gente confirma a data com você por lá.';
+        if (CFG.chavePix) { $('pixChave').textContent = fone(CFG.chavePix); $('btnPix').textContent = 'Copiar'; $('pixBox').hidden = false; }
+        var w = $('okWhats');
+        if (CFG.whatsappQuintal) {
+          var num = CFG.whatsappQuintal.replace(/\D/g, ''); if (num.indexOf('55') !== 0) num = '55' + num;
+          w.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent('Oi! Fiz o pedido de reserva do Quintal para ' + rotulo(S.sel) + '. Segue o comprovante do Pix da taxa de reserva.');
+          w.hidden = false;
+        }
+        show('vOk');
+      } else {
+        mostrarErro((r && r.erro) || 'Não foi possível enviar. Tente de novo.');
+        if (r && r.erro && r.erro.indexOf('locada') >= 0) carregar();
+      }
+    })
+    .catch(function () {
+      S.enviando = false; btn.disabled = false; btn.textContent = 'Enviar pedido';
+      mostrarErro('A conexão falhou. Confira a internet e tente de novo.');
+    });
+}
+
+$('prev').onclick = function () { if (S.mi > 0) { S.mi--; renderCal(); } };
+$('next').onclick = function () { if (S.mi < CFG.mesesVisiveis) { S.mi++; renderCal(); } };
+$('btnCont').onclick = function () { if (!S.sel) return; $('fData').textContent = rotulo(S.sel); mostrarErro(''); show('vForm'); };
+$('voltar').onclick = function () { show('vCal'); };
+$('btnEnviar').onclick = enviar;
+$('btnPix').onclick = function () {
+  var t = document.createElement('textarea'); t.value = String(CFG.chavePix).replace(/\D/g, ''); t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+  document.body.appendChild(t); t.select(); t.setSelectionRange(0, 99);
+  var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+  t.remove();
+  $('btnPix').textContent = ok ? 'Copiada!' : 'Copie à mão';
+};
+$('btnNovo').onclick = function () { S.sel = null; $('form').reset(); show('vCal'); carregar(); };
+
+carregar();
+</script>
+</body>
+</html>
